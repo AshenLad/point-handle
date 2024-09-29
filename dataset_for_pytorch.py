@@ -28,19 +28,19 @@ class MyPointDataset(Dataset):
         return point, label
 
 def collate_fn(data):
-    data2stack = np.stack([item[0] for item in data]).astype(np.float32)
-    label2stack = np.stack([item[1] for item in data]).astype(int)
+    data2stack = np.concatenate([item[0] for item in data], axis=0).astype(np.float32)
+    label2stack = np.concatenate([item[1] for item in data], axis=0).astype(int)
 
     return data2stack, label2stack
 
 if __name__ == '__main__':
     dataset = MyPointDataset(root_dir='./point_file', pointset='train')
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
+    dataloader = DataLoader(dataset, batch_size=3, shuffle=False, collate_fn=collate_fn)
     # dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
     for i,j in enumerate(dataloader):
         point, label = j
         print(point.shape)
-        print(label.shape)
+        # print(label.shape)
 
 
